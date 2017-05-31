@@ -1,21 +1,6 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
-<html>
-<head>
-	<meta http-equiv="content-type" content="text/html; charset=windows-1252"/>
-	<title></title>
-	<meta name="generator" content="LibreOffice 5.3.3.2 (Windows)"/>
-	<meta name="created" content="2017-05-30T21:57:03.557000000"/>
-	<meta name="changed" content="2017-05-30T21:58:12.102000000"/>
-	<style type="text/css">
-		@page { margin: 2cm }
-		p { margin-bottom: 0.25cm; line-height: 120% }
-	</style>
-</head>
-<body lang="pt-BR" dir="ltr">
-<p align="left" style="margin-bottom: 0cm; line-height: 100%"><font size="5" style="font-size: 18pt"><b>Cargos_tcepb<br/>
-</b></font>Scripts
-em Python para consulta dos cargos de servidores municipais e
-estaduais fornecidos pelo Tribunal de Contas do Estado da Para&iacute;ba.
+#Cargos_tcepb
+Scripts em python para criação de base de dados local dos cargos de servidores municipais e
+estaduais fornecidos pelo Tribunal de Contas do Estado da Paraíba e consulta de tais informações.
 Tais dados podem ser salvos em uma planilha excel.</p>
 <p align="left" style="margin-bottom: 0cm; line-height: 100%"><br/>
 Os
