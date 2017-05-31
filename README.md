@@ -44,10 +44,8 @@ opte pela vers&atilde;o 32bits.<br/>
 canto superior direito (download zip)<br/>
 3. No prompt de comando
 digite: <br/>
-pip install homura<br/>
 pip install winsound<br/>
-pip
-install xlswriter<br/>
+pip install xlswriter<br/>
 3. Execute o script criador_base_dados.py. 
 Ele baixar&aacute; os arquivos do site dados.tce.pb.gov.br e iniciar&aacute;
 a cria&ccedil;&atilde;o da base de dados folhapessoal.db.<br/>
