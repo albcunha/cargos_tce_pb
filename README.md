@@ -41,7 +41,7 @@ https://www.continuum.io/downloads<br/>
   Em caso de d&uacute;vidas,
 opte pela vers&atilde;o 32bits.<br/>
 2. Baixe o reposit&oacute;rio no
-canto superior direito (download zip)<br/>
+canto superior direito (Clone or download)<br/>
 3. No prompt de comando
 digite: <br/>
 pip install winsound<br/>
