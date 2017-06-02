@@ -58,6 +58,7 @@ usu&aacute;rio -&gt; anaconda 3 -&gt; Selecione python.exe<br/>
   Ele
 poder&aacute; falhar. Clique duas vezes novamente e vai
 funcionar.<br/>
+A criação da base de dados varia conforme computador, mas deve demorar cerca de uma hora<br/>
 3a. Se alguma falha ocorreu, repita a opera&ccedil;&atilde;o.
 Algumas vezes os arquivos do dados.tce.pb.gov.br n&atilde;o baixam
 completamente.<br/>
