@@ -1,13 +1,13 @@
 # Cargos_TCE_PB
-Scripts em python para criação de base de dados local dos cargos de servidores municipais e
+Script em python para criação de base de dados local dos cargos de servidores municipais e
 estaduais fornecidos pelo Tribunal de Contas do Estado da Paraíba e consulta de tais informações.
 Tais dados podem ser salvos em uma planilha excel.</p>
 <p align="left" style="margin-bottom: 0cm; line-height: 100%"><br/>
 Os
 dados est&atilde;o dispon&iacute;veis no site dados.tce.pb.gov.br.</p>
 <p align="left" style="margin-bottom: 0cm; line-height: 100%">A base
-de dados &eacute; montada com full text search fts4 com tokenizer
-unicode61. Isso quer dizer que:</p>
+de dados &eacute; montada com full text search(fts4 com tokenizer
+unicode61) em sqlite3. Isso quer dizer que:</p>
 <p align="left" style="margin-bottom: 0cm; line-height: 100%">1.
 Acentos s&atilde;o ignorados</p>
 <p align="left" style="margin-bottom: 0cm; line-height: 100%">2.
@@ -27,8 +27,8 @@ de espa&ccedil;o em seu HD<br/>
 b) Se estiver utilizando um proxy, vc
 dever&aacute; configur&aacute;-lo no prompt de comando digitando: SET
 HTTP_PROXY=http://login.senha@proxy:porta<br/>
-c) Preferencialmente
-instale o libroffice vers&atilde;o 32bits.<br/>
+c) 
+instale o libroffice vers&atilde;o 32bits. (necessário para abrir a planilha, de outra forma o script falha!)<br/>
 d) O script foi
 projetado para windows. Se voc&ecirc; utilizar linux voc&ecirc; tem
 condi&ccedil;&otilde;es de adapt&aacute;-lo para suas necessidades
