@@ -24,11 +24,11 @@ http://www.sqlite.org/fts3.html<br/>
 de tudo:<br/>
 </b>a) Verifique se voc&ecirc; possui pelo menos 12gb
 de espa&ccedil;o em seu HD<br/>
-b) Se estiver utilizando um proxy, vc
-dever&aacute; configur&aacute;-lo no prompt de comando digitando: SET
+b) Se estiver utilizando command prompt e um proxy, vc
+dever&aacute; configur&aacute;-lo digitando: SET
 HTTP_PROXY=http://login.senha@proxy:porta<br/>
 c) 
-instale o libroffice vers&atilde;o 32bits. (necessário para abrir a planilha, de outra forma o script falha!)<br/>
+instale o libroffice vers&atilde;o 32bits (necessário para abrir a planilha, de outra forma o script falha!)<br/>
 d) O script foi
 projetado para windows. Se voc&ecirc; utilizar linux voc&ecirc; tem
 condi&ccedil;&otilde;es de adapt&aacute;-lo para suas necessidades
