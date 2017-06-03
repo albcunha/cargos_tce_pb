@@ -1,6 +1,6 @@
 # Cargos_TCE_PB
 Scripts em python para criação de base de dados local dos cargos de servidores municipais e
-estaduais fornecidos pelo Tribunal de Contas do Estado da Paraíba e consulta de tais informações.
+estaduais fornecidos pelo Tribunal de Contas do Estado da Paraíba(TCE-PB) e consulta de tais informações.
 Tais dados podem ser salvos em uma planilha excel.</p>
 <p align="left" style="margin-bottom: 0cm; line-height: 100%"><br/>
 Os
