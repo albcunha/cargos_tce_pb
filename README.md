@@ -1,6 +1,8 @@
 # Cargos_TCE_PB
 <p>Scripts em python para cria&ccedil;&atilde;o de base de dados local dos cargos de servidores municipais e estaduais fornecidos pelo Tribunal de Contas do Estado da Para&iacute;ba(TCE-PB) e consulta de tais informa&ccedil;&otilde;es. Foi tamb&eacute;m adicionado um script em php para visualiza&ccedil;&atilde;o dos dados, que poder&aacute; ser acessado pela instala&ccedil;&atilde;o de miniservidores, sugerindo-se XAMPP.</p>
 <p>Tais dados podem ser salvos em uma planilha excel.</p>
+<p><b>Obs: Em 21.06.2017, o TCE disponibilizou a remuneração dos servidores e retirou a numeração completa do CPF. Assim, o campo do CPF equivale aos 6 dígitos do meios. Ex: o CPF ###.123.456-##. está no formato 123456</b></p>
+
 <p style="margin-bottom: 0cm; line-height: 100%;" align="left"><br /> Os dados est&atilde;o dispon&iacute;veis no site dados.tce.pb.gov.br.</p>
 <p style="margin-bottom: 0cm; line-height: 100%;" align="left">A base de dados &eacute; montada com full text search(fts3 com tokenizer unicode61) em sqlite3. Isso quer dizer que:</p>
 <p style="margin-bottom: 0cm; line-height: 100%;" align="left">1. Acentos s&atilde;o ignorados</p>
