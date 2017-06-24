@@ -2,7 +2,6 @@ import zlib # para descompactar o arquivo zip
 import sys # soluções de encoding utf8 do texto
 import sqlite3 #abrir arquivo como csv e salvar como base de dados sqlite3
 import timeit #informa o tempo de execução da pesquisa
-import winsound # aviso sonoro no final da execução do script
 import os
 import subprocess
 import requests
@@ -12,6 +11,10 @@ import pandas as pd#############################################################
 import numpy as np
 import time
 import datetime
+try:
+    import winsound # aviso sonoro no final da execução do script
+except:
+    pass
 # é necessario atualizar o arquivo sqlite3.dll para um que permite fts3. basta copiar o arquivo correto para a pasta do python. ex: C:\anaconda3\DLLs
 
 ###########################################################################################
@@ -45,13 +48,15 @@ def download_dados(arquivo, tamanho):
     except: 
         statinfo = 0
     tentativa = 0
-    while statinfo < tamanho and tentativa < 20:
+    while statinfo < tamanho and tentativa < 21:
         tentativa += 1
+        if tentativa == 21:
+            quit()
         if statinfo ==  tamanho:
             print('Download OK! :', arquivo,'\n\n')
             break
         if statinfo != 0:
-            print('Reiniciando download. Tentativa:',tentativa, datetime.datetime.now().time().strftime('%H:%M:%S'), '/20')
+            print('Reiniciando download. Tentativa:',str(tentativa) + '/20', datetime.datetime.now().time().strftime('%H:%M:%S'))
         time.sleep(5)
         download = os.system(resource_path(execucao))
         try: 
@@ -268,14 +273,13 @@ start_time = timeit.default_timer()
 
 print ('Criando tabela FTS3 Município (12 minutos)....')
 
-os.remove('TCE-PB-SAGRES-Empenhos_Esfera_Municipal.txt.gz')
-os.remove('TCE-PB-SAGRES-Estornos_Esfera_Municipal.txt')
-os.remove('TCE-PB-SAGRES-Estornos_Esfera_Municipal.txt.gz')
-os.remove('TCE-PB-SAGRES-Pagamentos_Esfera_Municipal.txt')
-os.remove('TCE-PB-SAGRES-Pagamentos_Esfera_Municipal.txt.gz')
+os.remove('TCE-PB-SAGRES-Folha_Pessoal_Esfera_Municipal.txt.gz')
+os.remove('TCE-PB-SAGRES-Folha_Pessoal_Esfera_Municipal.txt')
+os.remove('TCE-PB-SAGRES-Folha_Pessoal_Esfera_Estadual.txt.gz')
+os.remove('TCE-PB-SAGRES-Folha_Pessoal_Esfera_Estadual.txt')
 
 # cria modulo FTS3 para as tabelas
-curs.execute('CREATE VIRTUAL TABLE folhaparaiba USING fts4(servidor, cpf, cargo, natureza, mes_ano, remuneracao, poder, orgao, data_admissao tokenize=unicode61);')
+curs.execute('CREATE VIRTUAL TABLE folhaparaiba USING fts3(servidor, cpf, cargo, natureza, mes_ano, remuneracao, poder, orgao, data_admissao tokenize=unicode61);')
 # insere dados
 
 curs.execute('INSERT INTO folhaparaiba SELECT no_servidor, cd_cpf, de_cargo, de_tipocargo, dt_mesanoreferencia, vl_vantagens, de_ugestora, de_uorcamentaria, "" FROM folhamunicipio;')
@@ -283,18 +287,20 @@ print ('Criando tabela FTS4 Município (Temp. aprox: 12 minutos)....ok!')
 print("--- %s minutos ---" % "{0:.3f}".format(float((timeit.default_timer() - start_time))/60))
 
 start_time = timeit.default_timer()
-print ('Criando tabela FTS3 Estado (Temp. aprox: 12 minutos)....')
+print ('Criando tabela FTS3 folhaparaiba (Temp. aprox: 12 minutos)....')
 
 curs.execute('INSERT INTO folhaparaiba SELECT no_servidor, nu_cpf, no_cargo, tp_cargo, dt_mesano, vl_vantagens, de_poder, de_orgaolotacao, dt_admissao FROM folhaestado;')
 conn.commit()
 conn.close()
-print ('Criando tabela FTS4 Estado (Temp. aprox: 12 minutos)....ok!')
+print ('Criando tabela FTS3 folhaparaiba (Temp. aprox: 12 minutos)....ok!')
 print("--- %s minutos ---" % "{0:.3f}".format(float((timeit.default_timer() - start_time))/60))
 
 
-winsound.Beep(500,300)
-winsound.Beep(600,500)
-
+try:
+    winsound.Beep(500,300)
+    winsound.Beep(600,500)
+except:
+    pass
 input('Encerrado! Pressione Enter para sair do programa')
 
 
