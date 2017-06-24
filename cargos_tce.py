@@ -28,7 +28,7 @@ while True:
         if pergunta1.upper() == 'N' :
             print("Saindo do programa....")
             input('ENTER para sair')
-            sys.exit()
+            quit()
             
         else:
             continue
