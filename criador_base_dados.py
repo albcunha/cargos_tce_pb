@@ -93,7 +93,7 @@ def converte_mes_ano(x):
     return x[:-4].zfill(2) + '/' + x[-4:]
 
 def reduz_cpf(x):
-    return str(x)[3:-2]
+    return '###' + str(x)[3:-2] + '##'
 
 def dinheiro(x):
     return 'R$ ' + '{:,.2f}'.format(x).replace('.', '%temp%').replace(',', '.').replace('%temp%', ',')
@@ -195,7 +195,7 @@ curs.execute("""INSERT INTO dados_download (\
              [cargos_data_geracao, cargos_tamanho, cargos_hash_md5, cargos_tot_registros])
 conn.commit()
 
-colunas = """cd_ugestora, de_ugestora, de_cargo, de_tipocargo, cd_cpf, dt_mesanoreferencia, no_servidor, vl_vantagens, de_uorcamentaria"""
+colunas = """cd_ugestora, de_ugestora, de_cargo, de_tipocargo, cd_CPF, dt_mesanoreferencia, no_servidor, vl_vantagens, de_uorcamentaria"""
 colunas = colunas.split(',')
 colunas = [x.strip() for x in colunas]
 comando = ("""CREATE TABLE folhamunicipio (ID INT PRIMARY KEY ,""" +
@@ -210,7 +210,7 @@ dtype = {'cd_ugestora': np.int32,
            'de_ugestora': np.object, 
            'de_cargo': np.object,
            'de_tipocargo': np.object,
-           'cd_cpf': np.object, 
+           'cd_CPF': np.object, 
            'dt_mesanoreferencia': np.object, 
            'no_servidor': np.int32, 
            'vl_vantagens': np.float32, 

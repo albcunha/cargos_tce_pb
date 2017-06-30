@@ -193,7 +193,13 @@ processing: true,
 sortClasses:true,
 serverSide: true,
 "fnInitComplete": function (oSettings, json) {
-            oData.fnFilterOnReturn();
+             // Add "Clear Filter" button to Filter
+              var btnOK = $('<button class="btnOKDataTableFilter">OK</button>');
+              btnOK.appendTo($('#' + oSettings.sTableId).parents('.dataTables_wrapper').find('.dataTables_filter'));
+              $('#' + oSettings.sTableId + '_wrapper .btnOKDataTableFilter').click(function () {
+                oData.fnFilter($("div.dataTables_filter input").val());
+              });
+              oData.fnFilterOnReturn(); 
         },
 stateSave: false,
 deferRender: true,
@@ -203,12 +209,9 @@ scrollCollapse: true,
 scrolX: true,
 sScrollX: "100%",
 sScrollXInner: "100%", 
-scrollY: '80vh',
+scrollY: '74vh',
 scrollCollapse: true,
 paging: false,
-searchDelay: 1500,
-
-
 
 fixedHeader: {
             header: false,
@@ -263,8 +266,7 @@ buttons: [
 
 
  } );
-
-
+           
  
 } ); 
 
@@ -369,7 +371,7 @@ try {
 function query_datatables() 
 {
     /** Paging   */
-    $sqlMax = "20000";
+    $sqlMax = "1000";
     $sLimit = "";
     if ( isset( $_POST['iDisplayStart'] ) && $_POST['iDisplayLength'] != '-1' )
     {
@@ -434,11 +436,12 @@ function query_datatables()
     
     /* Data set length after filtering */
     //TODO : improve efficiency currently does 2X query  to count total records in query
-    $sQuery = " SELECT COUNT(ID) as totalqry FROM  folhaparaiba $sWhere LIMIT $sqlMax";
-    //$SqUERY = 100;
-    //$aResultFilterTotal =$this->query_array($sQuery); /* Fetch all of the remaining rows in the result set */
-    //$iFilteredTotal= 100;
-
+    #$sQuery = "SELECT total_registros FROM  dados_download LIMIT 1";
+    
+    //$aResultTotal = $this->query_array($sQuery);
+    //$aResultTotal = substr(implode("|",$aResultTotal[0]), 25);
+    //$iTotal = (int)$aResultTotal;
+    $iTotal = 1000;
     //$iFilteredTotal= $aResultFilterTotal[0]['totalqry'];
     //print_r($aResult);
     $iFilteredTotal= count($aResult);
@@ -451,7 +454,6 @@ function query_datatables()
     //$aResultTotal = $this->query_array($sQuery);
     //$aResultTotal = substr(implode("|",$aResultTotal[0]), 25);
     //$iTotal = (int)$aResultTotal;
-    $iTotal = 10000;
     /*
      * Output
      */
