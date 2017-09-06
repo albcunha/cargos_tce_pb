@@ -130,6 +130,8 @@ for c,item in enumerate(resultado):
 lista_arquivos = list(dict_arquivos.keys())
 c = 0
 for item in resultado:
+    if c == len(lista_arquivos): #dá erro quanto aos arquivos GeoPB, mas como não me interessa, retirei da lista.
+            break
     item = str(item)
     if '<li>  ' in item or '<li>\n' in item:
         dict_arquivos[lista_arquivos[c]].append(item[4:-6].strip())
