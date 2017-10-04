@@ -116,7 +116,7 @@ resultado = soup.find_all('li')
 lista = str(resultado)
 
 for item in resultado:
-    try:
+    try: #try foi um conserto rapido em razão de mudanças no site do dados.tce.pb.gov.
         if '<li>Arquivo:' in item:
             print(item)
     except: pass
