@@ -2,6 +2,7 @@ from time import time as time_time #informa o tempo de execução da pesquisa
 import os.path #verifica se os arquivos estão na pasta 
 from sys import argv as sys_argv # relacionado aos acentos
 from sqlite3 import connect as sqlite3_connect# consulta da base de dados folhapessoal.db em sqlite3
+import supersqlite
 from pandas import DataFrame as pd_dataframe #serve para salva o arquivos em formao xlsx
 from pandas import concat as pd_concat
 from pandas import ExcelWriter as pd_excelwriter
@@ -41,11 +42,11 @@ print("_________________________________________________________________________
 print("Olá! \nA Pesquisa a pesquisa pode ser feita por Ente, CPF(sem pontuação) e nome. \nAbra o arquivo leia-me.txt para entender como funciona a consulta.  ") 
 print("________________________________________________________________________________\n")
 
-
+db = supersqlite.SuperSQLite.connect('folhapessoal.db') #abre base de dados
+cursor = db.cursor()        
+                
 while True :
     while True:
-        db = sqlite3_connect('folhapessoal.db') #abre base de dados
-        cursor = db.cursor()        
         criterio_pesquisa = input('Pesquisa: ') 
         pergunta = criterio_pesquisa.replace(".","").replace("-","")
         pergunta = pergunta.strip()
@@ -166,8 +167,3 @@ while True :
                 break
             
             else: continue
-
-    
- 
-
-
