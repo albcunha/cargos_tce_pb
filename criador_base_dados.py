@@ -1,6 +1,7 @@
 import zlib # para descompactar o arquivo zip
 import sys # soluções de encoding utf8 do texto
 import sqlite3 #abrir arquivo como csv e salvar como base de dados sqlite3
+import supersqlite # para a extensão fts3. não tive tempo de converter tudo em uma biblioteca só.
 import timeit #informa o tempo de execução da pesquisa
 import os
 import subprocess
@@ -15,6 +16,8 @@ try:
     import winsound # aviso sonoro no final da execução do script
 except:
     pass
+
+# Criado por Alberto Cartaxo.
 # é necessario atualizar o arquivo sqlite3.dll para um que permite fts3. basta copiar o arquivo correto para a pasta do python. ex: C:\anaconda3\DLLs
 
 ###########################################################################################
@@ -112,7 +115,7 @@ soup = BeautifulSoup(texto, "html.parser")
 resultado = soup.find_all('li')
 
 # Para fazer o download automatico das colunas. A implementar
-
+# Na tabela de atributos dos arquivos folha de pessoal municipal do tce, falta inserir a coluna dt_ano, que consta no arquivo do dump da base deles.
 lista = str(resultado)
 
 for item in resultado:
@@ -180,8 +183,10 @@ descompacta(arquivo_estadual)
 start_time = timeit.default_timer()
 try: os.remove('Folhapessoal.db')
 except: pass
+
 conn = sqlite3.connect("Folhapessoal.db")
 curs = conn.cursor()
+
 print('\n\nCriando base de dados (arquivo Folhapessoal.db).... \n\n')
 print('Inserindo Folha dos Municípios na base de dados....')
 start_time = timeit.default_timer()
@@ -197,7 +202,7 @@ curs.execute("""INSERT INTO dados_download (\
              [cargos_data_geracao, cargos_tamanho, cargos_hash_md5, cargos_tot_registros])
 conn.commit()
 
-colunas = """cd_ugestora, de_ugestora, de_cargo, de_tipocargo, cd_CPF, dt_mesanoreferencia, no_servidor, vl_vantagens, de_uorcamentaria"""
+colunas = """cd_ugestora, de_ugestora, de_cargo, de_tipocargo, cd_CPF, dt_mesanoreferencia, dt_ano, no_servidor, vl_vantagens, de_uorcamentaria"""
 colunas = colunas.split(',')
 colunas = [x.strip() for x in colunas]
 comando = ("""CREATE TABLE folhamunicipio (ID INT PRIMARY KEY ,""" +
@@ -214,6 +219,7 @@ dtype = {'cd_ugestora': np.int32,
            'de_tipocargo': np.object,
            'cd_CPF': np.object, 
            'dt_mesanoreferencia': np.object, 
+           'dt_ano': np.int32,
            'no_servidor': np.int32, 
            'vl_vantagens': np.float32, 
            'de_uorcamentaria': np.object}
@@ -239,7 +245,7 @@ start_time = timeit.default_timer()
 
 
 print ('Inserindo Folha do Estado(Temp. aprox: 8 minutos) na base de dados....')
-colunas = """de_poder, de_orgaolotacao,  no_cargo, tp_cargo, nu_cpf, no_servidor, dt_mesano, dt_admissao, vl_vantagens"""
+colunas = """de_poder, de_orgaolotacao,  no_cargo, tp_cargo, nu_cpf, no_servidor, dt_mesano, dt_ano, dt_admissao, vl_vantagens"""
 
 colunas = colunas.split(',')
 colunas = [x.strip() for x in colunas]
@@ -258,7 +264,7 @@ for df in tqdm(reader, total=int(int(
                 estado_tot_registros) / chunksize), leave=True):
     
         df = df.rename(columns={c: c.replace(' ', '') for c in colunas}) 
-        df['dt_mesano'] = df['dt_mesano'].apply(converte_mes_ano)
+        df['dt_mesano'] = df['dt_mesano'].apply(converte_mes_ano)   
         df['nu_cpf'] = df['nu_cpf'].apply(reduz_cpf)
         df['vl_vantagens'] = df['vl_vantagens'].apply(dinheiro)
         df.index += j
@@ -280,31 +286,33 @@ os.remove('TCE-PB-SAGRES-Folha_Pessoal_Esfera_Municipal.txt')
 os.remove('TCE-PB-SAGRES-Folha_Pessoal_Esfera_Estadual.txt.gz')
 os.remove('TCE-PB-SAGRES-Folha_Pessoal_Esfera_Estadual.txt')
 
-# cria modulo FTS3 para as tabelas
-curs.execute('CREATE VIRTUAL TABLE folhaparaiba USING fts3(servidor, cpf, cargo, natureza, mes_ano, remuneracao, poder, orgao, data_admissao tokenize=unicode61);')
-# insere dados
+conn.close()
 
-curs.execute('INSERT INTO folhaparaiba SELECT no_servidor, cd_cpf, de_cargo, de_tipocargo, dt_mesanoreferencia, vl_vantagens, de_ugestora, de_uorcamentaria, "" FROM folhamunicipio;')
-print ('Criando tabela FTS4 Município (Temp. aprox: 12 minutos)....ok!')
+# cria modulo FTS3 para as tabelas
+# usa superqlite por conta das extensões sqlite fts3
+
+start_time = timeit.default_timer()
+tmp_db = supersqlite.SuperSQLite.connect("Folhapessoal.db")
+tmp_db.cursor().execute('CREATE VIRTUAL TABLE folhaparaiba USING fts3(servidor, cpf, cargo, natureza, mes_ano, remuneracao, poder, orgao, data_admissao tokenize=unicode61);')
+# insere dados
+print ('Criando tabela FTS3 Município (Temp. aprox: 12 minutos)....ok!')
+tmp_db.cursor().execute('INSERT INTO folhaparaiba SELECT no_servidor, cd_cpf, de_cargo, de_tipocargo, dt_mesanoreferencia, vl_vantagens, de_ugestora, de_uorcamentaria, "" FROM folhamunicipio;')
 print("--- %s minutos ---" % "{0:.3f}".format(float((timeit.default_timer() - start_time))/60))
+
+
+#curs.execute('CREATE VIRTUAL TABLE folhaparaiba USING fts3(servidor, cpf, cargo, natureza, mes_ano, remuneracao, poder, orgao, data_admissao tokenize=unicode61);')
+
+
+#curs.execute('INSERT INTO folhaparaiba SELECT no_servidor, cd_cpf, de_cargo, de_tipocargo, dt_mesanoreferencia, vl_vantagens, de_ugestora, de_uorcamentaria, "" FROM folhamunicipio;')
 
 start_time = timeit.default_timer()
 print ('Criando tabela FTS3 folhaparaiba (Temp. aprox: 12 minutos)....')
 
-curs.execute('INSERT INTO folhaparaiba SELECT no_servidor, nu_cpf, no_cargo, tp_cargo, dt_mesano, vl_vantagens, de_poder, de_orgaolotacao, dt_admissao FROM folhaestado;')
-conn.commit()
-conn.close()
+tmp_db.cursor().execute('INSERT INTO folhaparaiba SELECT no_servidor, nu_cpf, no_cargo, tp_cargo, dt_mesano, vl_vantagens, de_poder, de_orgaolotacao, dt_admissao FROM folhaestado;')
+
+#conn.commit()
+#conn.close()
 print ('Criando tabela FTS3 folhaparaiba (Temp. aprox: 12 minutos)....ok!')
 print("--- %s minutos ---" % "{0:.3f}".format(float((timeit.default_timer() - start_time))/60))
 
-
-try:
-    winsound.Beep(500,300)
-    winsound.Beep(600,500)
-except:
-    pass
 input('Encerrado! Pressione Enter para sair do programa')
-
-
-            
-            
