@@ -321,7 +321,7 @@ function query_datatables()
     $iTotal = (int)$aResultTotal;
     
 
-    $sQuery = "SELECT texto FROM  dados_download LIMIT 1";
+    $sQuery = "SELECT * FROM  dados_download LIMIT 1";
     $bdDetalhes = $this->query_array($sQuery);
     $bdDetalhes = substr(implode("",$bdDetalhes[0]), 0);
     
